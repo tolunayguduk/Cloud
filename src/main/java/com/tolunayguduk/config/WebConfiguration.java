@@ -1,8 +1,6 @@
 package com.tolunayguduk.config;
 
-import com.tolunayguduk.interceptor.anasayfaInterceptor;
-import com.tolunayguduk.interceptor.dashboardInterceptor;
-import com.tolunayguduk.interceptor.loginInterceptor;
+import com.tolunayguduk.interceptor.*;
 import org.omg.CORBA.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +40,8 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new anasayfaInterceptor()).addPathPatterns("/*");
         registry.addInterceptor(dilDegisimInterceptor()).addPathPatterns("/*");
         registry.addInterceptor(new dashboardInterceptor()).addPathPatterns("/dashboard/*");
+        registry.addInterceptor(new errorInterceptor()).addPathPatterns("/error/*");
+        registry.addInterceptor(new registerInterceptor()).addPathPatterns("/register/*");
     }
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

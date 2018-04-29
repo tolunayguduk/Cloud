@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public class UserDAOImpl implements UserDAO {
 
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -58,6 +59,39 @@ public class UserDAOImpl implements UserDAO {
         criteriaQuery.where(
                 criteriaBuilder.equal(root.get("username"), username),
                 criteriaBuilder.equal(root.get("password"), password)
+        );
+        Query query = session.createQuery(criteriaQuery);
+        List<User> userList = query.getResultList();
+
+        return userList;
+    }
+    @Override
+    public List<User> isExistSearchUserByID(Long userID) {
+        Session session = getCurrentSession();
+
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root);
+        criteriaQuery.where(
+                criteriaBuilder.equal(root.get("userID"), userID)
+        );
+        Query query = session.createQuery(criteriaQuery);
+        List<User> userList = query.getResultList();
+
+        return userList;
+    }
+
+    @Override
+    public List<User> isExistSearchUserByUsername(String username) {
+        Session session = getCurrentSession();
+
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = criteriaQuery.from(User.class);
+        criteriaQuery.select(root);
+        criteriaQuery.where(
+                criteriaBuilder.equal(root.get("username"), username)
         );
         Query query = session.createQuery(criteriaQuery);
         List<User> userList = query.getResultList();

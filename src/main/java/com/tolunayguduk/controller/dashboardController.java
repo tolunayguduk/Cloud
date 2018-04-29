@@ -1,48 +1,51 @@
 package com.tolunayguduk.controller;
 
+import com.tolunayguduk.fuctions.Directory;
+import com.tolunayguduk.model.User;
+import com.tolunayguduk.service.interfaces.FolderService;
+import com.tolunayguduk.service.interfaces.UserService;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.*;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class dashboardController {
-    @RequestMapping(value = {"/dashboard","/yonetimPaneli"}, method = RequestMethod.GET)
-    public String dashboard(){
-        return "dashboard";
+
+    @Autowired
+    FolderService folderService;
+    @Autowired
+    UserService userService;
+
+    @RequestMapping(value = {"/dashboard"})
+    public String dashboard() {
+       return "dashboard";
     }
-
-
-    @RequestMapping(value = "/createFolder.ajax", method = RequestMethod.GET)
-    public Boolean createFolder(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        /*Path path = Paths.get("'\'cloud'\'");*/
-        //if directory exists?
-        String path = (String) request.getHeader("Yol");
-        String folName = (String) request.getHeader("Ad");
-        String Paths = path + "/" + folName;
-
-
-        
-        /*if (!Files.exists(Paths.get(Paths))) {*/
-        File f = new File(Paths);
-        f.createNewFile();
-
-        System.out.println("Dosya başarı ile oluşturuldu " + path + folName);
-        return true;
+//**********************************************************************************
+@RequestMapping(value = "/deleteFolder.ajax")
+public @ResponseBody String deleteFolder(@RequestParam String fileName,
+                                         @RequestParam String path,
+                                         @RequestParam String username) {
+    return Directory.deleteDirectory(userService,fileName,path,username);
+}
+//**********************************************************************************
+    @RequestMapping(value = "/createFolder.ajax")
+    public @ResponseBody String createFolder(@RequestParam String fileName,
+                                           @RequestParam String path,
+                                           @RequestParam String username) {
+        return Directory.createDirectory(userService,fileName,path,username);
     }
-       /* else return false;*/
-
+//**********************************************************************************
+    @RequestMapping(value = {"/dashboard/repositoryIterator.ajax"})
+    public @ResponseBody String dashboard(String username,String path) {
+        return Directory.repositoryIterator(userService,username,path);
     }
-
-
+}
 
 

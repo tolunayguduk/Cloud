@@ -36,4 +36,14 @@ public class UserServiceImpl implements UserService {
     public List<User> isExistSearchUserByEmail(String email, String password) {
         return userdao.isExistSearchUserByEmail(email, password);
     }
+
+    @Override
+    public List<User> isExistSearchUserByID(Long userID) {
+        return userdao.isExistSearchUserByID(userID);
+    }
+
+    @Override
+    public List<User> isExistSearchUserByUsername(String username) {
+        return userdao.isExistSearchUserByUsername(username);
+    }
 }

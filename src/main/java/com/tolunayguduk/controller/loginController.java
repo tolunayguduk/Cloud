@@ -16,26 +16,28 @@ public class loginController {
     public String login(){
         return "login";
     }
-
+//**********************************************************************************
+// **********************************************************************************
+// **********************************************************************************
 
     @Autowired
     UserService userService;
-
     @RequestMapping(value = "/getLogin.ajax")
-    public @ResponseBody String getLogin(@RequestParam String username, @RequestParam String password) {
+    public @ResponseBody String getLogin(@RequestParam String username,
+                                        @RequestParam String password) {
 
         int index = username.length();
         String uzanti = username.substring(index-4,index);
         List list = null;
+        Boolean result = false;
 
         if(uzanti.equals(".com")){
             list = userService.isExistSearchUserByEmail(username, password);
         }else{
             list = userService.isExistSearchUserByUsername(username, password);
         }
-        Boolean result = false;
-        if(list.size()!=0){
-            result=true;
+        if(list.size()==1){
+            result = true;
         }
         return result.toString();
     }

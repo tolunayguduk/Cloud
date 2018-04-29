@@ -11,6 +11,9 @@
     <title>DASHBOARD</title>
 </head>
 <body>
-    <h1>DASHBOARD</h1>
+    <h1>${username} DASHBOARD</h1>
+
+
+
 </body>
 </html>

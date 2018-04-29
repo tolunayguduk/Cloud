@@ -15,9 +15,9 @@
 <body>
 
 <h1>LOGIN</h1>
-<form action="/dashboard" method="post">
-    <input type="text" name="sessionId">
-
+<form action="/getLogin.ajax" method="post">
+    <input type="text" name="username">
+    <input type="text" name="password">
     <button type="submit">GEC</button>
 </form>
 </body>

@@ -1,5 +1,6 @@
 package com.tolunayguduk.config;
 
+import com.tolunayguduk.model.Folder;
 import com.tolunayguduk.model.User;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class AppConfig implements AvailableSettings {
         props.put(C3P0_CONFIG_PREFIX + ".initialPoolSize", env.getProperty("hibernate.c3p0.initialPoolSize"));
 
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(User.class);
+        factoryBean.setAnnotatedClasses(User.class,Folder.class);
         return factoryBean;
     }
     @Bean
