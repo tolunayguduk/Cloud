@@ -2,7 +2,6 @@ package com.tolunayguduk.fuctions;
 
 import com.tolunayguduk.model.User;
 import com.tolunayguduk.service.interfaces.UserService;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
