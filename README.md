@@ -10,7 +10,7 @@ SpringMVC JavaEE login,register and file operations like create, delete or edit 
 --MoveFolderTo       : to move an existing directory to another location
 --RepositoryIterator : to list any directory's content
 
-# FileOperations
+# File Operations
 
 --CreateFolder : to create
 --DeleteFolder : to delete
