@@ -1,19 +1,12 @@
 package com.tolunayguduk.controller;
 
 import com.tolunayguduk.fuctions.Directory;
-import com.tolunayguduk.model.User;
+import com.tolunayguduk.fuctions.File;
 import com.tolunayguduk.service.interfaces.FolderService;
 import com.tolunayguduk.service.interfaces.UserService;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Controller
 public class dashboardController {
@@ -43,8 +36,41 @@ public @ResponseBody String deleteFolder(@RequestParam String fileName,
     }
 //**********************************************************************************
     @RequestMapping(value = {"/dashboard/repositoryIterator.ajax"})
-    public @ResponseBody String dashboard(String username,String path) {
+    public @ResponseBody String repositoryIterator(@RequestParam String username,
+                                                   @RequestParam String path) {
         return Directory.repositoryIterator(userService,username,path);
+    }
+//**********************************************************************************
+    @RequestMapping(value = {"/dashboard/renameFolder.ajax"})
+    public @ResponseBody String renameFolder(@RequestParam String username,
+                                        @RequestParam String oldName,
+                                          @RequestParam String path,
+                                          @RequestParam String newName) {
+        return Directory.renameDirectory(userService,oldName,path,username,newName);
+    }
+//**********************************************************************************
+    @RequestMapping(value = {"/dashboard/createFile.ajax"})
+    public @ResponseBody String createFile(@RequestParam String fileName,
+                                           @RequestParam String path,
+                                           @RequestParam String username,
+                                             @RequestParam String suffix) {
+        return File.createFile(userService,fileName,path,username,suffix);
+    }
+//**********************************************************************************
+    @RequestMapping(value = {"/dashboard/deleteFile.ajax"})
+    public @ResponseBody String deleteFile(@RequestParam String fileName,
+                                           @RequestParam String path,
+                                           @RequestParam String username,
+                                           @RequestParam String suffix) {
+        return File.deleteFile(userService,fileName,path,username,suffix);
+    }
+    @RequestMapping(value = {"/dashboard/renameFile.ajax"})
+    public @ResponseBody String renameFile(@RequestParam String fileName,
+                                           @RequestParam String path,
+                                           @RequestParam String newName,
+                                           @RequestParam String username,
+                                           @RequestParam String suffix) {
+        return File.renameFile(userService,fileName,path,username,newName,suffix);
     }
 }
 

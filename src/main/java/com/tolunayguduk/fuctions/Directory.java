@@ -3,8 +3,6 @@ package com.tolunayguduk.fuctions;
 import com.tolunayguduk.model.User;
 import com.tolunayguduk.service.interfaces.UserService;
 import net.sf.json.JSONObject;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -56,5 +54,20 @@ public class Directory {
             sayac++;
         }
         return jsonObject.toString();
+    }
+    public static String renameDirectory(UserService userService,String fileName, String path, String username, String newName){
+        List list = userService.isExistSearchUserByUsername(username);
+        User user = (User) list.get(0);
+        Boolean result = false;
+        try{
+            Path currentRelativePath = Paths.get("");
+            String s = currentRelativePath.toAbsolutePath().toString();
+            new File(s + "\\"+ "cloud\\" + user.getUsername() + "_" + user.getEmail() + "\\" + path + fileName)
+                    .renameTo(new File(s + "\\"+ "cloud\\" + user.getUsername() + "_" + user.getEmail() + "\\" + path + newName));
+            result = true;
+        }catch (Exception e){
+            System.out.println("ERROR = " + e.getMessage());
+        }
+        return result.toString();
     }
 }
