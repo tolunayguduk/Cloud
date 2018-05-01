@@ -5,8 +5,17 @@ import com.tolunayguduk.fuctions.File;
 import com.tolunayguduk.service.interfaces.FolderService;
 import com.tolunayguduk.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Locale;
 
 @Controller
 public class dashboardController {
@@ -15,6 +24,7 @@ public class dashboardController {
     FolderService folderService;
     @Autowired
     UserService userService;
+
 
     @RequestMapping(value = {"/dashboard"})
     public String dashboard() {
@@ -37,8 +47,10 @@ public @ResponseBody String deleteFolder(@RequestParam String fileName,
 //**********************************************************************************
     @RequestMapping(value = {"/dashboard/repositoryIterator.ajax"})
     public @ResponseBody String repositoryIterator(@RequestParam String username,
-                                                   @RequestParam String path) {
-        return Directory.repositoryIterator(userService,username,path);
+                                                   @RequestParam String path,
+                                                   HttpServletRequest httpServletRequest,
+                                                   HttpServletResponse httpServletResponse) {
+       return Directory.repositoryIterator(userService,username,path);
     }
 //**********************************************************************************
     @RequestMapping(value = {"/dashboard/renameFolder.ajax"})
@@ -47,6 +59,11 @@ public @ResponseBody String deleteFolder(@RequestParam String fileName,
                                           @RequestParam String path,
                                           @RequestParam String newName) {
         return Directory.renameDirectory(userService,oldName,path,username,newName);
+    }
+//**********************************************************************************
+    @RequestMapping(value = {"/dashboard/moveFolderTo.ajax"})
+    public @ResponseBody String moveFolderTo() {
+        return "HENUZ BAKIM ASAMASINDA";
     }
 //**********************************************************************************
     @RequestMapping(value = {"/dashboard/createFile.ajax"})
