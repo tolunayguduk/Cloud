@@ -126,6 +126,16 @@
                         </div>
                     </form>
                 </li>
+                <li class="active">
+                    <form action="#" method="get">
+                        <div class="search">
+                            <input type="file" class="form-control input-sm" maxlength="64" placeholder="Name" name="name" />
+                            <input type="hidden" name="path" value="<%=session.getAttribute("path")%>">
+                            <input type="hidden" name="username" value="<%=session.getAttribute("username")%>">
+                            <button type="submit" class="btn btn-primary btn-sm">Upload File <i class="icon-file"></i></button>
+                        </div>
+                    </form>
+                </li>
             </ul>
             <!-- /main navigation -->
 
@@ -213,7 +223,7 @@
                                     %>
                                         <li><a href="/dashboard/deleteDirectory?username=<%=session.getAttribute("username")%>&path=<%=session.getAttribute("path")%>&fileName=<%=dosya.get("ad")%>"><i class="icon-share2"></i>Sil</a></li>
                                         <li>
-                                            <form method="get" action="/dashboard/rename">
+                                            <form method="get" action="/dashboard/renameDirectory">
                                                 <input type="text" width="auto" placeholder="rename" name="newName">
                                                 <input name="username" type="hidden" value="<%=session.getAttribute("username")%>">
                                                 <input name="fileName" type="hidden" value="<%=dosya.get("ad")%>">
@@ -225,7 +235,7 @@
                                     %>
                                         <li><a href="/dashboard/deleteFile?username=<%=session.getAttribute("username")%>&path=<%=session.getAttribute("path")%>&fileName=<%=dosya.get("ad")%>"><i class="icon-share2"></i>Sil</a></li>
                                     <li>
-                                        <form method="get" action="/dashboard/rename">
+                                        <form method="get" action="/dashboard/renameFile">
                                             <input type="text" width="auto" placeholder="rename" name="newName">
                                             <input name="username" type="hidden" value="<%=session.getAttribute("username")%>">
                                             <input name="fileName" type="hidden" value="<%=dosya.get("ad")%>">
@@ -235,9 +245,6 @@
                                     <%
                                         }
                                     %>
-
-
-
                                 </ul>
                             </div>
                         </td>

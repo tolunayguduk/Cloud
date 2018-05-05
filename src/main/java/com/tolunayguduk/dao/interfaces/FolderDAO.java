@@ -8,4 +8,5 @@ public interface FolderDAO {
     public List<Folder> isExistFolder(String folderName);
     public List<Folder> isExistFolderByOwner(Long ownerID);
     public Boolean deleteFolder(Folder folder);
+    public Boolean renameFolder(Folder folder, String newName);
 }

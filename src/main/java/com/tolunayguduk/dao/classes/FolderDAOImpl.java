@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
@@ -22,7 +19,6 @@ public class FolderDAOImpl implements FolderDAO {
     public Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
-
     @Override
     public void insertFolder(Folder folder) {
         Session session = getCurrentSession();
@@ -30,7 +26,6 @@ public class FolderDAOImpl implements FolderDAO {
         session.saveOrUpdate(folder);
         session.flush();
     }
-
     @Override
     public List<Folder> isExistFolder(String folderName) {
         Session session = getCurrentSession();
@@ -47,7 +42,6 @@ public class FolderDAOImpl implements FolderDAO {
 
         return folderList;
     }
-
     @Override
     public List<Folder> isExistFolderByOwner(Long ownerID) {
         Session session = getCurrentSession();
@@ -64,29 +58,38 @@ public class FolderDAOImpl implements FolderDAO {
 
         return folderList;
     }
-
     @Override
     public Boolean deleteFolder(Folder folder) {
+
         Session session = getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(Folder.class);
-        Root<Folder> root = criteriaQuery.from(Folder.class);
-        CriteriaDelete<Folder> delete = criteriaBuilder.
-                createCriteriaDelete(Folder.class);
-
-        // set the root class
-        Root e = delete.from(Folder.class);
-
-        // set where clause
-        delete.where(
-                criteriaBuilder.equal(root.get("name"), folder.getName()),
-                criteriaBuilder.equal(root.get("ownerID"), folder.getOwnerID()),
+        CriteriaDelete<Folder> delete = criteriaBuilder.createCriteriaDelete(Folder.class);
+        Root<Folder> root = delete.from(Folder.class);
+        delete.where(criteriaBuilder.and(
+                criteriaBuilder.equal(root.get("name"),folder.getName()),
+                criteriaBuilder.equal(root.get("ownerID"),folder.getOwnerID()),
                 criteriaBuilder.equal(root.get("path"),folder.getPath())
-        );
-        Query query = session.createQuery(criteriaQuery);
-
-
-
+        ));
+        int sonuc = session.createQuery(delete).executeUpdate();
+        if(sonuc>0){ return true;}
+        else return false;
+    }
+    @Override
+    public Boolean renameFolder(Folder folder, String newName) {
+        Session session = getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaUpdate<Folder> update = builder.createCriteriaUpdate(Folder.class);
+        Root<Folder> root = update.from(Folder.class);
+        Expression<Boolean> filterPredicate = builder
+                .and(
+                        builder.equal(root.get("name"),folder.getName()),
+                        builder.equal(root.get("ownerID"),folder.getOwnerID()),
+                        builder.equal(root.get("path"),folder.getPath())
+                );
+        update
+                .set(root.get("name"), newName)
+                .where(filterPredicate);
+        session.createQuery(update).executeUpdate();
         return null;
     }
 }
