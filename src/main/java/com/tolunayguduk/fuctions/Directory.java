@@ -47,7 +47,7 @@ public class Directory {
         try{
             Path currentRelativePath = Paths.get("");
             String s = currentRelativePath.toAbsolutePath().toString();
-            new File(s + "\\"+ "cloud\\" + user.getUsername() + "_" + user.getEmail() + "\\" + path +"\\"+ fileName).mkdir();
+            new File(s + "\\"+ "cloud\\" + user.getUsername() + "_" + user.getEmail() + "\\" + path +"\\"+ fileName).mkdirs();
             result = true;
         }catch (Exception e){
             System.out.println("ERROR = " + e.getMessage());

@@ -15,8 +15,8 @@ public class Folder implements Serializable {
     private Long folderID;
     @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "rootID", nullable = false)
-    private Long rootID;
+    @Column(name = "path", nullable = false)
+    private String path;
     @Column(name = "created_at", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
@@ -49,12 +49,12 @@ public class Folder implements Serializable {
         this.name = name;
     }
 
-    public Long getRootID() {
-        return rootID;
+    public String getPath() {
+        return path;
     }
 
-    public void setRootID(Long rootID) {
-        this.rootID = rootID;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Date getCreated_at() {

@@ -11,14 +11,14 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class File {
-    public static String createFile(UserService userService, String fileName, String path, String username,String suffix){
+    public static String createFile(UserService userService, String fileName, String path, String username){
         List list = userService.isExistSearchUserByUsername(username);
         User user = (User) list.get(0);
         Boolean result = false;
         try{
             Path currentRelativePath = Paths.get("");
             String s = currentRelativePath.toAbsolutePath().toString();
-            new java.io.File(s + "\\"+ "cloud\\" + user.getUsername() + "_" + user.getEmail() + "\\" + path + "\\" + fileName + "." + suffix).createNewFile();
+            new java.io.File(s + "\\"+ "cloud\\" + user.getUsername() + "_" + user.getEmail() + "\\" + path + "\\" + fileName).createNewFile();
             result = true;
         }catch (Exception e){
             System.out.println("ERROR = " + e.getMessage());

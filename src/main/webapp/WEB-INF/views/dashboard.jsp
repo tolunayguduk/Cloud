@@ -106,7 +106,26 @@
 
             <!-- Main navigation -->
             <ul class="navigation">
-                <li class="active"><a href="index.html"><span>Dashboard</span> <i class="icon-screen2"></i></a></li>
+                <li class="active">
+                    <form action="/dashboard/createFile" method="get">
+                        <div class="search">
+                            <input type="text" class="form-control input-sm" maxlength="64" placeholder="Name" name="name" />
+                            <input type="hidden" name="path" value="<%=session.getAttribute("path")%>">
+                            <input type="hidden" name="username" value="<%=session.getAttribute("username")%>">
+                            <button type="submit" class="btn btn-primary btn-sm">Create File <i class="icon-file"></i></button>
+                        </div>
+                    </form>
+                </li>
+                <li class="active">
+                    <form action="/dashboard/createDirectory" method="get">
+                        <div class="search">
+                            <input type="text" class="form-control input-sm" maxlength="64" placeholder="Name" name="name" />
+                            <input type="hidden" name="path" value="<%=session.getAttribute("path")%>">
+                            <input type="hidden" name="username" value="<%=session.getAttribute("username")%>">
+                            <button type="submit" class="btn btn-primary btn-sm">Create Directory  <i class="icon-folder"></i></button>
+                        </div>
+                    </form>
+                </li>
             </ul>
             <!-- /main navigation -->
 
@@ -149,6 +168,7 @@
         <!-- Tasks table -->
         <div class="block">
             <h6 class="heading-hr"><i class="icon-grid"></i> Recent tasks</h6>
+
             <div class="datatable-tasks">
                 <table class="table table-bordered">
                     <thead>
@@ -192,21 +212,26 @@
                                         if(dosya.get("tur").equals("dizin")){
                                     %>
                                         <li><a href="/dashboard/deleteDirectory?username=<%=session.getAttribute("username")%>&path=<%=session.getAttribute("path")%>&fileName=<%=dosya.get("ad")%>"><i class="icon-share2"></i>Sil</a></li>
-                                        <li><a href="#"><i class="icon-share2"></i> Yeniden İsimlendir</a></li>
-                                        <li><a href="#"><i class="icon-checkmark3"></i> Taşı</a></li>
+                                        <li>
+                                            <form method="get" action="/dashboard/rename">
+                                                <input type="text" width="auto" placeholder="rename" name="newName">
+                                                <input name="username" type="hidden" value="<%=session.getAttribute("username")%>">
+                                                <input name="fileName" type="hidden" value="<%=dosya.get("ad")%>">
+                                                <input name="path" type="hidden" value="<%=session.getAttribute("path")%>">
+                                            </form>
+                                        </li>
                                     <%
                                         }else{
                                     %>
                                         <li><a href="/dashboard/deleteFile?username=<%=session.getAttribute("username")%>&path=<%=session.getAttribute("path")%>&fileName=<%=dosya.get("ad")%>"><i class="icon-share2"></i>Sil</a></li>
-                                        <li class="search">
-                                            <a href="#">
-                                            <form>
-                                                <input type="text" class="form-control input-sm" maxlength="64" placeholder="Search" />
-                                                <button type="submit" class="btn btn-primary btn-sm">RN</button>
-                                            </form>
-                                        </a>
-                                        </li>
-                                        <li><a href="#"><i class="icon-checkmark3"></i> Taşı</a></li>
+                                    <li>
+                                        <form method="get" action="/dashboard/rename">
+                                            <input type="text" width="auto" placeholder="rename" name="newName">
+                                            <input name="username" type="hidden" value="<%=session.getAttribute("username")%>">
+                                            <input name="fileName" type="hidden" value="<%=dosya.get("ad")%>">
+                                            <input name="path" type="hidden" value="<%=session.getAttribute("path")%>">
+                                        </form>
+                                    </li>
                                     <%
                                         }
                                     %>

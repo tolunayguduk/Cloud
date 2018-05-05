@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
@@ -62,5 +63,30 @@ public class FolderDAOImpl implements FolderDAO {
         List<Folder> folderList = query.getResultList();
 
         return folderList;
+    }
+
+    @Override
+    public Boolean deleteFolder(Folder folder) {
+        Session session = getCurrentSession();
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(Folder.class);
+        Root<Folder> root = criteriaQuery.from(Folder.class);
+        CriteriaDelete<Folder> delete = criteriaBuilder.
+                createCriteriaDelete(Folder.class);
+
+        // set the root class
+        Root e = delete.from(Folder.class);
+
+        // set where clause
+        delete.where(
+                criteriaBuilder.equal(root.get("name"), folder.getName()),
+                criteriaBuilder.equal(root.get("ownerID"), folder.getOwnerID()),
+                criteriaBuilder.equal(root.get("path"),folder.getPath())
+        );
+        Query query = session.createQuery(criteriaQuery);
+
+
+
+        return null;
     }
 }

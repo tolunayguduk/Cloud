@@ -1,5 +1,6 @@
 package com.tolunayguduk.controller;
 
+import com.tolunayguduk.dao.interfaces.FolderDAO;
 import com.tolunayguduk.fuctions.Directory;
 import com.tolunayguduk.fuctions.File;
 import com.tolunayguduk.service.interfaces.UserService;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Locale;
 
 @Controller
@@ -15,6 +15,8 @@ public class DashboardController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    FolderDAO folderDAO;
 
     @RequestMapping(value = {"/dashboard"}, method = RequestMethod.GET)
     public String dashboard(){
@@ -70,6 +72,34 @@ public class DashboardController {
 
         String result = "error";
         if(Boolean.parseBoolean(File.renameFile(userService,fileName,path,username, newName))){
+            model.addAttribute("folderList",Directory.repositoryIterator(userService,username,path));
+            model.addAttribute("path", path);
+            result = "dashboard";
+        }
+        return result;
+    }
+    @RequestMapping(value = {"/dashboard/createFile"}, method = RequestMethod.GET)
+    public String createFile(@RequestParam("username") String username,
+                         @RequestParam("path") String path,
+                         @RequestParam("name") String name,
+                         Model model){
+
+        String result = "error";
+        if(Boolean.parseBoolean(File.createFile(userService,name,path,username))){
+            model.addAttribute("folderList",Directory.repositoryIterator(userService,username,path));
+            model.addAttribute("path", path);
+            result = "dashboard";
+        }
+        return result;
+    }
+    @RequestMapping(value = {"/dashboard/createDirectory"}, method = RequestMethod.GET)
+    public String createDirectory(@RequestParam("username") String username,
+                             @RequestParam("path") String path,
+                             @RequestParam("name") String name,
+                             Model model){
+
+        String result = "error";
+        if(Boolean.parseBoolean(Directory.createDirectory(userService,name,path,username))){
             model.addAttribute("folderList",Directory.repositoryIterator(userService,username,path));
             model.addAttribute("path", path);
             result = "dashboard";

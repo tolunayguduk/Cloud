@@ -7,4 +7,5 @@ public interface FolderDAO {
     public void insertFolder(Folder folder);
     public List<Folder> isExistFolder(String folderName);
     public List<Folder> isExistFolderByOwner(Long ownerID);
+    public Boolean deleteFolder(Folder folder);
 }
