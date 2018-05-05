@@ -39,11 +39,8 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new anasayfaInterceptor()).addPathPatterns("/*");
         registry.addInterceptor(dilDegisimInterceptor()).addPathPatterns("/*");
-        registry.addInterceptor(new dashboardInterceptor()).addPathPatterns("/dashboard/*");
         registry.addInterceptor(new errorInterceptor()).addPathPatterns("/error/*");
-        registry.addInterceptor(new registerInterceptor()).addPathPatterns("/register/*");
     }
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

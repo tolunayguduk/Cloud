@@ -9,8 +9,5 @@
         <module name="Cloud" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Cloud" target="7" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -9,8 +9,6 @@
     <link href='<s:url value="/resources/css/anasayfa.css"/>' rel="stylesheet" />
 </head>
 <body>
-
-
 <div class="container">
     <div class="row">
         <div class="center-box">
@@ -19,10 +17,5 @@
         </div>
     </div>
 </div>
-<!--
-    <h1>ANASAYFA</h1>
-    <a href="?lang=en">English</a> | <a href="?lang=tr">Türkçe</a>
-    <h4>${kisiKarsilama}</h4>
--->
 </body>
 </html>
