@@ -1,4 +1,4 @@
-package com.tolunayguduk.fuctions;
+package com.tolunayguduk.functions;
 
 import com.tolunayguduk.model.User;
 import com.tolunayguduk.service.interfaces.UserService;

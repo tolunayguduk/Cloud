@@ -1,15 +1,24 @@
 package com.tolunayguduk.controller;
 
-import com.tolunayguduk.fuctions.Directory;
+import com.tolunayguduk.functions.Directory;
 import com.tolunayguduk.model.File;
 import com.tolunayguduk.model.Folder;
+import com.tolunayguduk.model.User;
 import com.tolunayguduk.service.interfaces.FileService;
 import com.tolunayguduk.service.interfaces.FolderService;
 import com.tolunayguduk.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -63,7 +72,7 @@ public class DashboardController {
         file.setPath(path);
 
         String result = "error";
-        if(Boolean.parseBoolean(com.tolunayguduk.fuctions.File.deleteFile(userService,fileName,path,username))){
+        if(Boolean.parseBoolean(com.tolunayguduk.functions.File.deleteFile(userService,fileName,path,username))){
             model.addAttribute("folderList",Directory.repositoryIterator(userService,username,path));
             model.addAttribute("path", path);
             fileService.deleteFile(file);
@@ -83,13 +92,14 @@ public class DashboardController {
         fileService.renameFile(file,newName);
 
         String result = "error";
-        if(Boolean.parseBoolean(com.tolunayguduk.fuctions.File.renameFile(userService,fileName,path,username, newName))){
+        if(Boolean.parseBoolean(com.tolunayguduk.functions.File.renameFile(userService,fileName,path,username, newName))){
             model.addAttribute("folderList",Directory.repositoryIterator(userService,username,path));
             model.addAttribute("path", path);
             result = "dashboard";
         }
         return result;
     }
+
     @RequestMapping(value = {"/dashboard/renameDirectory"}, method = RequestMethod.GET)
     public String renameDirectory(@RequestParam("username") String username, @RequestParam("path") String path, @RequestParam("fileName") String fileName, @RequestParam("newName") String newName, Model model){
 
@@ -101,7 +111,7 @@ public class DashboardController {
         folderService.renameFolder(folder,newName);
 
         String result = "error";
-        if(Boolean.parseBoolean(com.tolunayguduk.fuctions.File.renameFile(userService,fileName,path,username, newName))){
+        if(Boolean.parseBoolean(com.tolunayguduk.functions.File.renameFile(userService,fileName,path,username, newName))){
             model.addAttribute("folderList",Directory.repositoryIterator(userService,username,path));
             model.addAttribute("path", path);
             result = "dashboard";
@@ -118,7 +128,7 @@ public class DashboardController {
         file.setPath(path);
 
         String result = "error";
-        if(Boolean.parseBoolean(com.tolunayguduk.fuctions.File.createFile(userService,name,path,username))){
+        if(Boolean.parseBoolean(com.tolunayguduk.functions.File.createFile(userService,name,path,username))){
             model.addAttribute("folderList",Directory.repositoryIterator(userService,username,path));
             model.addAttribute("path", path);
             fileService.insertFile(file);
@@ -143,5 +153,53 @@ public class DashboardController {
             result = "dashboard";
         }
         return result;
+    }
+
+
+    @RequestMapping(value = {"/dashboard/downloadDoc"}, method = RequestMethod.GET)
+    public void downloadDoc(@RequestParam("fileName") String fileName, @RequestParam("path") String path, @RequestParam("username") String username, HttpServletResponse response) throws IOException {
+        List<User> user =  userService.isExistSearchUserByUsername(username);
+        java.io.File file = new java.io.File("C:\\tomcat\\bin\\cloud\\" + username + "_" + user.get(0).getEmail() + path);
+        InputStream in = new FileInputStream(file);
+        response.setContentType(String.valueOf(MediaType.APPLICATION_PDF));
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        response.setHeader("Content-Length", String.valueOf(file.length()));
+        FileCopyUtils.copy(in, response.getOutputStream());
+    }
+
+    @RequestMapping(value = {"/dashboard/downloadDir"}, method = RequestMethod.GET)
+    public void downloadDir(@RequestParam("fileName") String fileName,
+                            @RequestParam("path") String path,
+                            @RequestParam("username") String username,
+                            HttpServletResponse response,
+                            HttpServletRequest request) throws IOException {
+
+
+
+    }
+
+
+    @RequestMapping(value = {"/dashboard/uploadDoc"}, method = RequestMethod.POST)
+    public @ResponseBody void uploadDoc(@RequestParam("file") MultipartFile file,
+                          @RequestParam("path") String path,
+                          @RequestParam("username") String username,
+                            HttpServletResponse response) throws IOException {
+            try {
+                byte[] bytes = file.getBytes();
+
+                // Creating the directory to store file
+                String rootPath = "C:\\tomcat\\bin\\cloud\\" + username + "_" + userService.isExistSearchUserByUsername(username).get(0).getEmail() + path;
+                java.io.File dir = new java.io.File(rootPath);
+                if (!dir.exists())
+                    dir.mkdirs();
+
+                // Create the file on server
+                java.io.File serverFile = new java.io.File(dir.getAbsolutePath() + "\\" + file.getOriginalFilename());
+                BufferedOutputStream stream = new BufferedOutputStream(
+                        new FileOutputStream(serverFile));
+                stream.write(bytes);
+                stream.close();
+                response.sendRedirect("/dashboard/path?username=" + username + "&path=" + path);
+            } catch (Exception e) {}
     }
 }

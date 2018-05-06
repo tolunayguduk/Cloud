@@ -1,6 +1,6 @@
 package com.tolunayguduk.controller;
 
-import com.tolunayguduk.fuctions.Directory;
+import com.tolunayguduk.functions.Directory;
 import com.tolunayguduk.model.User;
 import com.tolunayguduk.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

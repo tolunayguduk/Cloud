@@ -1,8 +1,9 @@
-package com.tolunayguduk.fuctions;
+package com.tolunayguduk.functions;
 
 import com.tolunayguduk.model.User;
 import com.tolunayguduk.service.interfaces.UserService;
 import net.sf.json.JSONObject;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -96,4 +97,5 @@ public class Directory {
         }
         return result.toString();
     }
+
 }

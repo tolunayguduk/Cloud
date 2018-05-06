@@ -6,11 +6,16 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 public class WebApplicationInitializer implements org.springframework.web.WebApplicationInitializer {
+
+    private String TMP_FOLDER = "/tmp";
+    private int MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
+
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         WebApplicationContext context =getContext();
@@ -19,6 +24,9 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
         MainDispatcher.setLoadOnStartup(1);
         MainDispatcher.addMapping("/");
 
+
+        MultipartConfigElement multipartConfigElement = new MultipartConfigElement(TMP_FOLDER, MAX_UPLOAD_SIZE, MAX_UPLOAD_SIZE * 2, MAX_UPLOAD_SIZE / 2);
+        MainDispatcher.setMultipartConfig(multipartConfigElement);
 
 
 
